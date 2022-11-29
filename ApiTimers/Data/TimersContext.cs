@@ -14,6 +14,7 @@ namespace ApiTimers.Data
         public DbSet<TimerEvento> TimerEventos { get; set; }
         public DbSet<TiempoEmpresaSala> TiempoEmpresaSalas { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<CategoriaTimer> CategoriasTimers { get; set; }
 
     }
 }

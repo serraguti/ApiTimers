@@ -1,6 +1,5 @@
 ﻿using ApiTimers.Models;
 using ApiTimers.Repositories;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,36 +7,36 @@ namespace ApiTimers.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EventosController : ControllerBase
+    public class CategoriasTimerController : ControllerBase
     {
         RepositoryTimers repo;
 
-        public EventosController(RepositoryTimers repo)
+        public CategoriasTimerController(RepositoryTimers repo)
         {
             this.repo = repo;
         }
 
-        // GET: api/Eventos
+        // GET: api/CategoriasTimer
         /// <summary>
-        /// Obtiene el conjunto de Eventos, tabla EVENTOS.
+        /// Obtiene el conjunto de Categorias (Tabla CATEGORIAS_TIMER).
         /// </summary>
         /// <remarks>
-        /// Método para devolver todos los eventos de la BBDD
+        /// Devuelve los datos de la tabla CATEGORIAS_TIMER
         /// </remarks>
         /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<Evento>> GetEventos()
+        public ActionResult<List<CategoriaTimer>> GetCategoriasTimers()
         {
-            return this.repo.GetEventos();
+            return this.repo.GetCategoriasTimer();
         }
 
-        // GET: api/Eventos/id
+        // GET: api/CategoriaTimers/id
         /// <summary>
-        /// Obtiene un Evento por su Id, tabla EVENTOS.
+        /// Obtiene un CATEGORIAS_TIMER por su Id. Tabla CATEGORIAS_TIMER
         /// </summary>
         /// <remarks>
-        /// Permite buscar un Evento por el ID de Evento
+        /// Permite buscar un CATEGORIAS_TIMER por el ID
         /// </remarks>
         /// <param name="id">Id (GUID) del objeto.</param>
         /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
@@ -45,25 +44,25 @@ namespace ApiTimers.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Evento> FindEvento(int id)
+        public ActionResult<CategoriaTimer> 
+            FindCategoriaTimer(int id)
         {
-            Evento evento = this.repo.FindEvento(id);
-            if (evento == null)
+            CategoriaTimer cat = this.repo.FindCategoriasTimer(id);
+            if (cat == null)
             {
                 return NotFound();
             }
-            return evento;
+            return cat;
         }
 
-
-        // POST: api/Evento
+        // POST: api/CategoriaTimers
         /// <summary>
-        /// Crea un nuevo Evento en la BBDD, tabla EVENTOS.
+        /// Crea una nueva categoria en CATEGORIAS_TIMER.
         /// </summary>
         /// <remarks>
-        /// El ID del evento se genera en la BBDD.
+        /// El ID de CATEGORIAS_TIMER se genera en la BBDD.
         /// </remarks>
-        /// <param name="evento">Objeto Evento a crear a la BD.</param>
+        /// <param name="categoria">Objeto Evento a crear a la BD.</param>
         /// <response code="201">Created. Objeto correctamente creado en la BD.</response>        
         /// <response code="400">BadRequest. No se ha creado el objeto en la BD. Formato del objeto incorrecto.</response>
         /// <response code="500">BBDD. No se ha creado el objeto en la BD. Error en la BBDD.</response>///  
@@ -71,22 +70,23 @@ namespace ApiTimers.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<Evento> CreateEvento(Evento evento)
+        public ActionResult<CategoriaTimer> 
+            CreateCategoriaTimer(CategoriaTimer categoria)
         {
-            Evento newEvento = 
-                this.repo.CreateEvento(evento.NombreEvento, evento.InicioEvento
-                , evento.FinEvento);
-            return Ok(newEvento);
+            CategoriaTimer newCat =
+                this.repo.CreateCategoriaTimer
+                (categoria.Categoria, categoria.Duracion);
+            return Ok(newCat);
         }
 
-        // PUT: api/Evento
+        // PUT: api/CategoriaTimers
         /// <summary>
-        /// Modifica un Evento en la BBDD, tabla EVENTOS.
+        /// Modifica una categoria en la tabla CATEGORIAS_TIMER.
         /// </summary>
         /// <remarks>
-        /// Debemos enviar un objeto Evento con el ID existente
+        /// Debemos enviar un objeto CATEGORIAS_TIMER con un ID existente
         /// </remarks>
-        /// <param name="evento">Objeto Evento a modificar en la BD.</param>
+        /// <param name="timer">Objeto Evento a modificar en la BD.</param>
         /// <response code="201">Modified. Objeto correctamente modificado en la BBDD.</response>        
         /// <response code="400">BadRequest. No se ha creado el objeto en la BD. Formato del objeto incorrecto.</response>
         /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>    
@@ -96,27 +96,28 @@ namespace ApiTimers.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult UpdateEvento(Evento evento)
+        public ActionResult UpdateCategoriaTimer(CategoriaTimer categoria)
         {
-            if (this.repo.FindEvento(evento.IdEvento) == null) {
+            if (this.repo.FindCategoriasTimer(categoria.IdCategoria) == null)
+            {
                 return NotFound();
             }
             else
             {
-                this.repo.UpdateEvento(evento.IdEvento, evento.NombreEvento
-                    , evento.InicioEvento, evento.FinEvento);
+                this.repo.UpdateCategoriaTimer(categoria.IdCategoria
+                    , categoria.Categoria, categoria.Duracion);
                 return Ok();
             }
         }
 
-        // DELETE: api/Evento/{id}
+        // DELETE: api/CategoriaTimer/{id}
         /// <summary>
-        /// Elimina un Evento en la BBDD mediante su ID.
+        /// Elimina una categoria en la tabla CATEGORIAS_TIMER.
         /// </summary>
         /// <remarks>
-        /// Enviaremos el ID mediante la URL
+        /// Enviaremos el ID del CATEGORIAS_TIMER mediante la URL
         /// </remarks>
-        /// <param name="id">ID del evento a eliminar</param>
+        /// <param name="id">ID de CATEGORIAS_TIMER a eliminar</param>
         /// <response code="201">Deleted. Objeto eliminado en la BBDD.</response> 
         /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>    
         /// <response code="500">BBDD. No se ha eliminado el objeto en la BD. Error en la BBDD.</response>/// 
@@ -124,15 +125,15 @@ namespace ApiTimers.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id}")]
-        public ActionResult DeleteEvento(int id)
+        public ActionResult DeleteCategoriaTimer(int id)
         {
-            if (this.repo.FindEvento(id) == null)
+            if (this.repo.FindCategoriasTimer(id) == null)
             {
                 return NotFound();
             }
             else
             {
-                this.repo.DeleteEvento(id);
+                this.repo.DeleteCategoriaTimer(id);
                 return Ok();
             }
         }

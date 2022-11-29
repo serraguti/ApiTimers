@@ -24,14 +24,16 @@ namespace ApiTimers.Repositories
             return this.context.Empresas.FirstOrDefault(z => z.IdEmpresa == idempresa);
         }
 
-        public void CreateEmpresa(string nombre)
+        public Empresa CreateEmpresa(string nombre)
         {
+            int idempresa = this.GetMaxIdEmpresa(); 
             Empresa empresa = new Empresa();
-            empresa.IdEmpresa = this.GetMaxIdEmpresa();
+            empresa.IdEmpresa = idempresa;
             empresa.NombreEmpresa = nombre;
             empresa.Imagen = "https://www.nomaspapel.es/assets/blog/5e99714cb4a08947402795.png";
             this.context.Empresas.Add(empresa);
             this.context.SaveChanges();
+            return empresa;
         }
 
         public void UpdateEmpresa(int id, string nombre)
@@ -62,16 +64,18 @@ namespace ApiTimers.Repositories
             return this.context.Eventos.ToList();
         }
 
-        public void CreateEvento(string nombreevento
+        public Evento CreateEvento(string nombreevento
             , DateTime inicio, DateTime fin)
         {
+            int id = this.GetMaxIdEvento();
             Evento evento = new Evento();
-            evento.IdEvento = this.GetMaxIdEvento();
+            evento.IdEvento = id;
             evento.NombreEvento = nombreevento;
             evento.InicioEvento = inicio;
             evento.FinEvento = fin;
             this.context.Eventos.Add(evento);
             this.context.SaveChanges();
+            return evento;
         }
 
         public void UpdateEvento(int id,
@@ -99,7 +103,7 @@ namespace ApiTimers.Repositories
 
         private int GetMaxIdEvento()
         {
-            if (this.context.Empresas.Count() == 0)
+            if (this.context.Eventos.Count() == 0)
             {
                 return 1;
             }
@@ -123,13 +127,14 @@ namespace ApiTimers.Repositories
             return this.context.Salas.FirstOrDefault(z => z.IdSala == idsala);
         }
 
-        public void CreateSala(string nombre)
+        public Sala CreateSala(string nombre)
         {
             Sala sala = new Sala();
             sala.IdSala = this.GetMaxIdSala();
             sala.NombreSala = nombre;
             this.context.Salas.Add(sala);
             this.context.SaveChanges();
+            return sala;
         }
 
         public void UpdateSala(int id, string nombre)
@@ -148,7 +153,7 @@ namespace ApiTimers.Repositories
 
         private int GetMaxIdSala()
         {
-            if (this.context.Empresas.Count() == 0)
+            if (this.context.Salas.Count() == 0)
             {
                 return 1;
             }
@@ -171,16 +176,18 @@ namespace ApiTimers.Repositories
             return this.context.Timers.FirstOrDefault(z => z.IdTemporizador == id);
         }
 
-        public void CreateTemporizador(DateTime inicio,
+        public Temporizador CreateTemporizador(DateTime inicio,
             int idcategoria)
         {
+            int id = this.GetMaxIdTimer(); 
             Temporizador timer = new Temporizador();
-            timer.IdTemporizador = this.GetMaxIdTimer();
+            timer.IdTemporizador = id;
             timer.Inicio = inicio;
             timer.IdCategoria = idcategoria;
             timer.Pausa = false;
             this.context.Timers.Add(timer);
             this.context.SaveChanges();
+            return timer;
         }
 
         public void UpdateTemporizador(int id,DateTime inicio,
@@ -209,7 +216,7 @@ namespace ApiTimers.Repositories
 
         private int GetMaxIdTimer()
         {
-            if (this.context.Empresas.Count() == 0)
+            if (this.context.Timers.Count() == 0)
             {
                 return 1;
             }
@@ -233,7 +240,7 @@ namespace ApiTimers.Repositories
             return this.context.TiempoEmpresaSalas.FirstOrDefault(z => z.Id == id);
         }
 
-        public void CreateTiempoEmpresaSalas(
+        public TiempoEmpresaSala CreateTiempoEmpresaSalas(
             int idtimer, int idempresa, int idsala, int idevento)
         {
             TiempoEmpresaSala tiempo = new TiempoEmpresaSala();
@@ -244,11 +251,12 @@ namespace ApiTimers.Repositories
             tiempo.IdEvento = idevento;
             this.context.TiempoEmpresaSalas.Add(tiempo);
             this.context.SaveChanges();
+            return tiempo;
         }
 
         private int GetMaxIdTiempoEmpresaSala()
         {
-            if (this.context.Empresas.Count() == 0)
+            if (this.context.TiempoEmpresaSalas.Count() == 0)
             {
                 return 1;
             }
@@ -266,7 +274,7 @@ namespace ApiTimers.Repositories
             return this.context.Usuarios.ToList();
         }
 
-        public void CreateUser(string username, string pass)
+        public Usuario CreateUser(string username, string pass)
         {
             Usuario user = new Usuario();
             user.IdUsuario = this.GetMaxIdUsuarios();
@@ -274,6 +282,7 @@ namespace ApiTimers.Repositories
             user.Password = pass;
             this.context.Usuarios.Add(user);
             this.context.SaveChanges();
+            return user;
         }
 
         public Usuario 
@@ -287,7 +296,7 @@ namespace ApiTimers.Repositories
 
         private int GetMaxIdUsuarios()
         {
-            if (this.context.Empresas.Count() == 0)
+            if (this.context.Usuarios.Count() == 0)
             {
                 return 1;
             }
@@ -298,7 +307,57 @@ namespace ApiTimers.Repositories
         }
         #endregion
 
+        #region CATEGORIAS TIMER
+        public List<CategoriaTimer> GetCategoriasTimer()
+        {
+            return this.context.CategoriasTimers.ToList();
+        }
 
+        public CategoriaTimer FindCategoriasTimer(int id)
+        {
+            return this.context.CategoriasTimers.FirstOrDefault(z => z.IdCategoria == id);
+        }
+
+        public CategoriaTimer CreateCategoriaTimer
+            (string nombreCategoria, int duracion)
+        {
+            CategoriaTimer cat = new CategoriaTimer();
+            cat.IdCategoria = this.GetMaxIdCategoriaTimers();
+            cat.Categoria = nombreCategoria;
+            cat.Duracion = duracion;
+            this.context.CategoriasTimers.Add(cat);
+            this.context.SaveChanges();
+            return cat;
+        }
+
+        public void UpdateCategoriaTimer(int id
+            , string nombreCategoria, int duracion)
+        {
+            CategoriaTimer cat = this.FindCategoriasTimer(id);
+            cat.Categoria = nombreCategoria;
+            cat.Duracion = duracion;
+            this.context.SaveChanges();
+        }
+
+        public void DeleteCategoriaTimer(int id)
+        {
+            CategoriaTimer cat = this.FindCategoriasTimer(id);
+            this.context.CategoriasTimers.Remove(cat);
+            this.context.SaveChanges();
+        }
+
+        private int GetMaxIdCategoriaTimers()
+        {
+            if (this.context.CategoriasTimers.Count() == 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return this.context.CategoriasTimers.Max(z => z.IdCategoria) + 1;
+            }
+        }
+        #endregion
 
         #region TIMER EVENTOS
         public List<TimerEvento> GetTimersEventos()
