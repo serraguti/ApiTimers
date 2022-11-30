@@ -28,7 +28,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(document =>
 {
     document.Title = "Api Timers";
-    document.Description = "Descripción del Web API.";
+    document.Description = "Api Timers 2022.  BBDD Timers para el proyecto";
 
     // CONFIGURAMOS LA SEGURIDAD JWT PARA SWAGGER,
     // PERMITE AÑADIR EL TOKEN JWT A LA CABECERA.
@@ -71,17 +71,20 @@ var app = builder.Build();
 //}
 
 app.UseOpenApi();
-app.UseSwaggerUi3();
+//app.UseSwaggerUi3();
 
 //app.UseSwagger();
-//app.UseSwaggerUI(options =>
-//{
-//    options.SwaggerEndpoint(
-//        url: "/swagger/v1/swagger.json", name: "Api v1");
-//    options.RoutePrefix = "";
-//});
+app.UseSwaggerUI(options =>
+{
+    options.InjectStylesheet("/css/bootstrap.css");
+    options.InjectStylesheet("/css/material3x.css");
+    options.SwaggerEndpoint(
+        url: "/swagger/v1/swagger.json", name: "Api v1");
+    options.RoutePrefix = "";
+});
 app.UseCors("corsapp");
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
