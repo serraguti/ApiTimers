@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,6 +82,7 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint(
         url: "/swagger/v1/swagger.json", name: "Api v1");
     options.RoutePrefix = "";
+    options.DocExpansion(DocExpansion.None);
 });
 app.UseCors("corsapp");
 app.UseHttpsRedirection();
