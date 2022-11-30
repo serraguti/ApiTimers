@@ -2,11 +2,13 @@
 using ApiTimers.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 
 namespace ApiTimers.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [OpenApiTag("EMPRESAS")]
     public class EmpresasController : ControllerBase
     {
         RepositoryTimers repo;

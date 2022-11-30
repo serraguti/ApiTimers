@@ -2,11 +2,13 @@
 using ApiTimers.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 
 namespace ApiTimers.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [OpenApiTag("SALAS")]
     public class SalasController : ControllerBase
     {
         RepositoryTimers repo;
@@ -104,11 +106,9 @@ namespace ApiTimers.Controllers
                 this.repo.UpdateSala(id, nombresala);
                 return Ok();
             }
-            
         }
 
-        //DELETE api/[controller]/{id}
-        // DELETE: api/Evento/{id}
+        // DELETE: api/Salas/{id}
         /// <summary>
         /// Elimina una Sala en la BBDD mediante su ID.
         /// </summary>

@@ -254,6 +254,24 @@ namespace ApiTimers.Repositories
             return tiempo;
         }
 
+        public void UpdateTiempoEmpresaSalas(int id,
+            int idtimer, int idempresa, int idsala, int idevento)
+        {
+            TiempoEmpresaSala tiempo = this.FindTiempoEmpresaSalas(id);
+            tiempo.IdSala = idsala;
+            tiempo.IdTimer = idtimer;
+            tiempo.IdEmpresa = idempresa;
+            tiempo.IdEvento = idevento;
+            this.context.SaveChanges();
+        }
+
+        public void DeleteTiempoEmpresaSalas(int id)
+        {
+            TiempoEmpresaSala tiempo = this.FindTiempoEmpresaSalas(id);
+            this.context.TiempoEmpresaSalas.Remove(tiempo);
+            this.context.SaveChanges();
+        }
+
         private int GetMaxIdTiempoEmpresaSala()
         {
             if (this.context.TiempoEmpresaSalas.Count() == 0)
@@ -274,6 +292,11 @@ namespace ApiTimers.Repositories
             return this.context.Usuarios.ToList();
         }
 
+        public Usuario FindUser(int id)
+        {
+            return this.context.Usuarios.FirstOrDefault(z => z.IdUsuario == id);
+        }
+
         public Usuario CreateUser(string username, string pass)
         {
             Usuario user = new Usuario();
@@ -283,6 +306,22 @@ namespace ApiTimers.Repositories
             this.context.Usuarios.Add(user);
             this.context.SaveChanges();
             return user;
+        }
+
+        public void UpdateUsuario(int id
+            , string username, string pass)
+        {
+            Usuario user = this.FindUser(id);
+            user.UserName = username;
+            user.Password = pass;
+            this.context.SaveChanges();
+        }
+
+        public void DeleteUsuario(int id)
+        {
+            Usuario user = this.FindUser(id);
+            this.context.Usuarios.Remove(user);
+            this.context.SaveChanges();
         }
 
         public Usuario 

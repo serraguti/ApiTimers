@@ -2,11 +2,13 @@
 using ApiTimers.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 
 namespace ApiTimers.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [OpenApiTag("CATEGORIAS_TIMER")]
     public class CategoriasTimerController : ControllerBase
     {
         RepositoryTimers repo;

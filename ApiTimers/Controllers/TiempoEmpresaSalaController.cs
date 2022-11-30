@@ -2,11 +2,13 @@
 using ApiTimers.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 
 namespace ApiTimers.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [OpenApiTag("TIEMPOS_EMPRESAS_SALAS")]
     public class TiempoEmpresaSalaController : ControllerBase
     {
         RepositoryTimers repo;
@@ -32,7 +34,7 @@ namespace ApiTimers.Controllers
             return this.repo.GetTiempoEmpresaSalas();
         }
 
-        // GET: api/Timers/id
+        // GET: api/TiempoEmpresaSala/id
         /// <summary>
         /// Obtiene un TIEMPOS_EMPRESAS_SALAS por su Id. Tabla TIEMPOS_EMPRESAS_SALAS
         /// </summary>
@@ -57,7 +59,7 @@ namespace ApiTimers.Controllers
         }
 
 
-        // POST: api/Timers
+        // POST: api/TiempoEmpresaSala
         /// <summary>
         /// Crea un nuevo registro en TIEMPOS_EMPRESAS_SALAS
         /// </summary>
@@ -79,6 +81,66 @@ namespace ApiTimers.Controllers
                 this.repo.CreateTiempoEmpresaSalas(tiempo.IdTimer
                 , tiempo.IdEmpresa, tiempo.IdSala, tiempo.IdEvento);
             return Ok(newTiempo);
+        }
+
+        // PUT: api/TiempoEmpresaSala
+        /// <summary>
+        /// Modifica una TIEMPOS_EMPRESAS_SALAS en la BBDD.
+        /// </summary>
+        /// <remarks>
+        /// El ID de TIEMPOS_EMPRESAS_SALAS se genera solo.
+        /// </remarks>
+        /// <param name="tiempo">Objeto TiempoEmpresaSala para modificar</param>
+        /// <response code="201">Modified. Objeto correctamente creado en la BD.</response>  
+        /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>            
+        /// <response code="500">BBDD. No se ha modificado el objeto en la BD. Error en la BBDD.</response>///  
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult UpdateTiempoEmpresaSala
+            (TiempoEmpresaSala tiempo)
+        {
+            if (this.repo.FindTiempoEmpresaSalas(tiempo.Id) == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                this.repo.UpdateTiempoEmpresaSalas(tiempo.Id
+                    , tiempo.IdTimer, tiempo.IdEmpresa
+                    , tiempo.IdSala, tiempo.IdEvento);
+                return Ok();
+            }
+        }
+
+        //TiempoEmpresaSala
+        // DELETE: api/TiempoEmpresaSala/{id}
+        /// <summary>
+        /// Elimina una TIEMPOS_EMPRESAS_SALAS en la BBDD mediante su ID.
+        /// </summary>
+        /// <remarks>
+        /// Enviaremos el ID de TIEMPOS_EMPRESAS_SALAS mediante la URL
+        /// </remarks>
+        /// <param name="id">ID de TIEMPOS_EMPRESAS_SALAS a eliminar</param>
+        /// <response code="201">Deleted. Objeto eliminado en la BBDD.</response> 
+        /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>    
+        /// <response code="500">BBDD. No se ha eliminado el objeto en la BD. Error en la BBDD.</response>/// 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpDelete("{id}")]
+        public ActionResult DeleteTiempoEmpresaSala(int id)
+        {
+            if (this.repo.FindTiempoEmpresaSalas(id) == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                this.repo.DeleteTiempoEmpresaSalas(id);
+                return Ok();
+            }
         }
     }
 }
