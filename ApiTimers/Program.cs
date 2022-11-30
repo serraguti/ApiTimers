@@ -57,7 +57,10 @@ string cnn = builder.Configuration.GetConnectionString("sqltimers");
 builder.Services.AddTransient<RepositoryTimers>();
 builder.Services.AddDbContext<TimersContext>
     (options => options.UseSqlServer(cnn));
-
+builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+{
+    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -77,7 +80,7 @@ app.UseSwaggerUi3();
 //        url: "/swagger/v1/swagger.json", name: "Api v1");
 //    options.RoutePrefix = "";
 //});
-
+app.UseCors("corsapp");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
