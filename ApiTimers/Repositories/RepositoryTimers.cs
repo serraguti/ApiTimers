@@ -43,6 +43,13 @@ namespace ApiTimers.Repositories
             this.context.SaveChanges();
         }
 
+        public void DeleteEmpresa(int id)
+        {
+            Empresa empresa = this.FindEmpresa(id);
+            this.context.Empresas.Remove(empresa);
+            this.context.SaveChanges();
+        }
+
         private int GetMaxIdEmpresa()
         {
             if (this.context.Empresas.Count() == 0)

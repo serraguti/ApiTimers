@@ -96,5 +96,33 @@ namespace ApiTimers.Controllers
             this.repo.UpdateEmpresa(idempresa, nombre);
             return Ok();
         }
+
+        // DELETE: api/Empresas/{id}
+        /// <summary>
+        /// Elimina una Empresa en la BBDD mediante su ID. Tabla EMPRESAS
+        /// </summary>
+        /// <remarks>
+        /// Enviaremos el ID mediante la URL
+        /// </remarks>
+        /// <param name="id">ID de la Empresa a eliminar</param>
+        /// <response code="201">Deleted. Objeto eliminado en la BBDD.</response> 
+        /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>    
+        /// <response code="500">BBDD. No se ha eliminado el objeto en la BD. Error en la BBDD.</response>/// 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpDelete("{id}")]
+        public ActionResult DeleteEmpresa(int id)
+        {
+            if (this.repo.FindEmpresa(id) == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                this.repo.DeleteEmpresa(id);
+                return Ok();
+            }
+        }
     }
 }
