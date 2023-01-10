@@ -461,6 +461,23 @@ namespace ApiTimers.Repositories
         {
             return this.context.TimerEventos.FirstOrDefault(z => z.UniqueId == id);
         }
-#endregion
+
+        public List<Empresa> GetTimersEmpresa()
+        {
+            var consulta = (from datos in this.context.TimerEventos
+                           select datos);
+            List<Empresa> empresas = new List<Empresa>();
+            foreach (TimerEvento evento in consulta)
+            {
+                Empresa emp = new Empresa();
+                emp.IdEmpresa = evento.IdEmpresa;
+                emp.NombreEmpresa = evento.Empresa;
+                emp.Imagen = "";
+                empresas.Add(emp);
+            }
+            return empresas;
+        }
+
+        #endregion
     }
 }

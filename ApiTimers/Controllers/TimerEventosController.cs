@@ -51,16 +51,16 @@ namespace ApiTimers.Controllers
             return this.repo.GetTimersEventosEmpresa(idempresa);
         }
 
-        // GET: api/TimerEventos/EventosCategoria/{idcategoria}
-        /// <summary>
-        /// Busca los TIEMPOS EVENTOS por CATEGORIA (Vista TIEMPOS_EVENTOS).
-        /// </summary>
-        /// <remarks>
-        /// Devuelve los datos de la Vista TIEMPOS_EVENTOS filtrados por el ID Empresa
-        /// </remarks>
-        /// <param name="idcategoria">Id categoria a filtrar</param>        
-        /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
-        [HttpGet]
+    // GET: api/TimerEventos/EventosCategoria/{idcategoria}
+    /// <summary>
+    /// Busca los TIEMPOS EVENTOS por CATEGORIA (Vista TIEMPOS_EVENTOS).
+    /// </summary>
+    /// <remarks>
+    /// Devuelve los datos de la Vista TIEMPOS_EVENTOS filtrados por el ID Empresa
+    /// </remarks>
+    /// <param name="idcategoria">Id categoria a filtrar</param>        
+    /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
+    [HttpGet]
         [Route("[action]/{idcategoria}")]
         public ActionResult<List<TimerEvento>> EventosCategoria
             (int idcategoria)
@@ -106,6 +106,31 @@ namespace ApiTimers.Controllers
                 return NotFound();
             }
             return timer;
+        }
+
+        // GET: api/EmpresasTimers
+        /// <summary>
+        /// Busca las DISTINTAS EMPRESAS que están asignadas en tiempos (Vista TIEMPOS_EVENTOS).
+        /// </summary>
+        /// <remarks>
+        /// Devuelve los datos de la Vista TIEMPOS_EVENTOS de Empresas
+        /// </remarks>
+        /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Route("[action]")]
+        public ActionResult<List<Empresa>> EmpresasTimers()
+        {
+            var empresas = this.repo.GetTimersEmpresa();
+            if (empresas == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return empresas;
+            }
+            
         }
     }
 }
