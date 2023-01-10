@@ -465,13 +465,16 @@ namespace ApiTimers.Repositories
         public List<Empresa> GetTimersEmpresa()
         {
             var consulta = (from datos in this.context.TimerEventos
-                           select datos);
+                           select new { 
+                           idEmpresa = datos.IdEmpresa,
+                           nombreEmpresa = datos.Empresa
+                           }).Distinct();
             List<Empresa> empresas = new List<Empresa>();
-            foreach (TimerEvento evento in consulta)
+            foreach (var evento in consulta)
             {
                 Empresa emp = new Empresa();
-                emp.IdEmpresa = evento.IdEmpresa;
-                emp.NombreEmpresa = evento.Empresa;
+                emp.IdEmpresa = evento.idEmpresa;
+                emp.NombreEmpresa = evento.nombreEmpresa;
                 emp.Imagen = "";
                 empresas.Add(emp);
             }
