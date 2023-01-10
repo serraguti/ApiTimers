@@ -1,5 +1,6 @@
 ﻿using ApiTimers.Data;
 using ApiTimers.Models;
+using Microsoft.Data.SqlClient;
 
 namespace ApiTimers.Repositories
 {
@@ -231,6 +232,12 @@ namespace ApiTimers.Repositories
             {
                 return this.context.Timers.Max(z => z.IdTemporizador) + 1;
             }
+        }
+
+        public int IncreaseTimers(int minutes)
+        {
+            int modificados = this.context.IncreaseTimers(minutes);
+            return modificados;
         }
 
         #endregion

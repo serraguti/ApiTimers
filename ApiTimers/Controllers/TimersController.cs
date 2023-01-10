@@ -109,7 +109,7 @@ namespace ApiTimers.Controllers
             }
         }
 
-        // PUT: api/Times/{id}
+        // PUT: api/Timers/{id}
         /// <summary>
         /// Pausa un Timer en la tabla TEMPORIZADORES.
         /// </summary>
@@ -137,6 +137,28 @@ namespace ApiTimers.Controllers
                 this.repo.PausarTemporizador(idtimer);
                 return Ok();
             }
+        }
+
+        // PUT: api/Timers/{id}
+        /// <summary>
+        /// Incrementa en N Minutos todos los Timers
+        /// </summary>
+        /// <remarks>
+        /// Debemos enviar el incremento en Minutos que deseamos incrementar los Timers.
+        /// </remarks>
+        /// <param name="minutes">Tiempo a incrementar los Timers</param>
+        /// <response code="201">Modified. Objetos TEMPORIZADORES modificados.</response>        
+        /// <response code="404">NotFound. No se ha encontrado el objeto solicitado.</response>    
+        /// <response code="500">BBDD. No se ha modificado el objeto en la BD. Error en la BBDD.</response>///  
+        [HttpPut]
+        [Route("[action]/{minutes}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult IncreaseTimers(int minutes)
+        {
+            this.repo.IncreaseTimers(minutes);
+            return Ok();
         }
 
         // DELETE: api/Timers/{id}

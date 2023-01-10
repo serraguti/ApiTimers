@@ -1,4 +1,5 @@
 ﻿using ApiTimers.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiTimers.Data
@@ -16,5 +17,12 @@ namespace ApiTimers.Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<CategoriaTimer> CategoriasTimers { get; set; }
 
+        public int IncreaseTimers(int minutes)
+        {
+            string sql = "SP_INCREASETIMERS @INCREASE";
+            SqlParameter pamincrease = new SqlParameter("@INCREASE", minutes);
+            int modificados = this.Database.ExecuteSqlRaw(sql, pamincrease);
+            return modificados;
+        }
     }
 }
