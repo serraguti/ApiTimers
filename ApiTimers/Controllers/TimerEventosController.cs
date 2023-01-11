@@ -51,16 +51,35 @@ namespace ApiTimers.Controllers
             return this.repo.GetTimersEventosEmpresa(idempresa);
         }
 
-    // GET: api/TimerEventos/EventosCategoria/{idcategoria}
-    /// <summary>
-    /// Busca los TIEMPOS EVENTOS por CATEGORIA (Vista TIEMPOS_EVENTOS).
-    /// </summary>
-    /// <remarks>
-    /// Devuelve los datos de la Vista TIEMPOS_EVENTOS filtrados por el ID Empresa
-    /// </remarks>
-    /// <param name="idcategoria">Id categoria a filtrar</param>        
-    /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
-    [HttpGet]
+
+        // GET: api/TimerEventos/EventosActualesEmpresa/{idempresa}
+        /// <summary>
+        /// Busca los TIEMPOS EVENTOS por EMPRESA (Vista TIEMPOS_EVENTOS).
+        /// </summary>
+        /// <remarks>
+        /// Devuelve los datos de la Vista TIEMPOS_EVENTOS filtrados por el ID Empresa
+        /// </remarks>
+        /// <param name="idempresa">Id empresa a filtrar</param>        
+        /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Route("[action]/{idempresa}")]
+        public ActionResult<List<TimerEvento>> EventosActualesEmpresa
+            (int idempresa)
+        {
+            return this.repo.GetTimersActualesEmpresa(idempresa);
+        }
+
+        // GET: api/TimerEventos/EventosCategoria/{idcategoria}
+        /// <summary>
+        /// Busca los TIEMPOS EVENTOS por CATEGORIA (Vista TIEMPOS_EVENTOS).
+        /// </summary>
+        /// <remarks>
+        /// Devuelve los datos de la Vista TIEMPOS_EVENTOS filtrados por el ID Empresa
+        /// </remarks>
+        /// <param name="idcategoria">Id categoria a filtrar</param>        
+        /// <response code="200">OK. Devuelve el objeto solicitado.</response>        
+        [HttpGet]
         [Route("[action]/{idcategoria}")]
         public ActionResult<List<TimerEvento>> EventosCategoria
             (int idcategoria)

@@ -1,6 +1,7 @@
 ﻿using ApiTimers.Data;
 using ApiTimers.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiTimers.Repositories
 {
@@ -479,6 +480,14 @@ namespace ApiTimers.Repositories
                 empresas.Add(emp);
             }
             return empresas;
+        }
+
+        public List<TimerEvento> GetTimersActualesEmpresa(int idempresa)
+        {
+            string sql = "SP_GETTIEMPOEMPRESASACTUAL @IDEMPRESA";
+            SqlParameter pamempresa = new SqlParameter("@IDEMPRESA", idempresa);
+            var datos = this.context.TimerEventos.FromSqlRaw(sql, pamempresa);
+            return datos.ToList();
         }
 
         #endregion
